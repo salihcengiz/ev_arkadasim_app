@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Ima
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Avatar, Button, Badge } from '../../src/components';
+import { Button, Badge } from '../../src/components';
 import { listingService, messageService } from '../../src/services';
 import { useAuthStore } from '../../src/store/authStore';
 import { SEARCH_TYPES, GENDERS, OCCUPATIONS, getRoomCountLabel } from '../../src/constants';
@@ -336,40 +336,89 @@ export default function ListingDetailScreen() {
 
           {/* User Info */}
           {listing.user && (
-            <View className="border-t border-secondary-100 pt-4">
-              <Text className="text-lg font-semibold text-secondary-900 mb-3">İlan Sahibi</Text>
-              <TouchableOpacity 
-                className="flex-row items-center"
+            <View className="border-t border-secondary-100 pt-6">
+              <Text className="text-lg font-bold text-brand-dark mb-3">İlan Sahibi</Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() => router.push(`/user/${listing.user!.id}`)}
               >
-                <Avatar
-                  name={listing.user.fullName}
-                  source={listing.user.profileImage || undefined}
-                  size="lg"
-                />
-                <View className="ml-4 flex-1">
-                  <Text className="text-base font-semibold text-secondary-900">
-                    {listing.user.fullName}
-                  </Text>
-                  <View className="flex-row items-center flex-wrap mt-1">
-                    {listing.user.age && (
-                      <Text className="text-secondary-500 text-sm mr-2">
-                        {listing.user.age} yaşında
+                <View
+                  className="bg-white rounded-2xl p-4 border border-brand-border"
+                  style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}
+                >
+                  <View className="flex-row items-center" style={{ gap: 16 }}>
+                    {/* Avatar + verified badge */}
+                    <View style={{ position: 'relative' }}>
+                      <View
+                        className="w-16 h-16 rounded-full overflow-hidden bg-primary-100"
+                        style={{ borderWidth: 2, borderColor: '#13ecec' }}
+                      >
+                        {listing.user.profileImage ? (
+                          <Image
+                            source={{ uri: getImageUrl(listing.user.profileImage) }}
+                            style={{ width: '100%', height: '100%' }}
+                            resizeMode="cover"
+                          />
+                        ) : (
+                          <View className="flex-1 items-center justify-center">
+                            <Text className="text-brand-dark font-bold text-xl">
+                              {listing.user.fullName?.charAt(0).toUpperCase()}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                      <View
+                        className="absolute"
+                        style={{ bottom: -2, right: -2, width: 20, height: 20, borderRadius: 10, backgroundColor: '#13ecec', borderWidth: 2, borderColor: 'white', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        <Ionicons name="checkmark" size={10} color="#0d1b1b" />
+                      </View>
+                    </View>
+
+                    {/* Name + subtitle */}
+                    <View className="flex-1">
+                      <Text className="font-bold text-lg text-brand-dark">{listing.user.fullName}</Text>
+                      <Text className="text-xs text-secondary-500 mt-0.5">
+                        {[
+                          listing.user.occupation && (OCCUPATIONS[listing.user.occupation as keyof typeof OCCUPATIONS] || listing.user.occupation),
+                          listing.user.age && `${listing.user.age} Yaşında`,
+                        ].filter(Boolean).join(' • ')}
                       </Text>
-                    )}
-                    {listing.user.gender && (
-                      <Text className="text-secondary-500 text-sm mr-2">
-                        • {GENDERS[listing.user.gender as keyof typeof GENDERS]}
-                      </Text>
-                    )}
-                    {listing.user.occupation && (
-                      <Text className="text-secondary-500 text-sm">
-                        • {OCCUPATIONS[listing.user.occupation as keyof typeof OCCUPATIONS] || listing.user.occupation}
-                      </Text>
-                    )}
+                    </View>
+
+                    <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
                   </View>
+
+                  {/* Bio */}
+                  {listing.user.bio ? (
+                    <Text className="mt-4 text-sm text-secondary-600 leading-relaxed">
+                      {listing.user.bio}
+                    </Text>
+                  ) : null}
+
+                  {/* Lifestyle tags */}
+                  {(() => {
+                    const u = listing.user as any;
+                    const tags: { emoji: string; label: string }[] = [];
+                    if (u?.gender === 'kadin') tags.push({ emoji: '👩', label: 'Kadın' });
+                    if (u?.gender === 'erkek') tags.push({ emoji: '👨', label: 'Erkek' });
+                    if (u?.maritalStatus === 'bekar') tags.push({ emoji: '🙋', label: 'Bekar' });
+                    if (u?.occupation === 'ogrenci') tags.push({ emoji: '🎓', label: 'Öğrenci' });
+                    if (u?.occupation === 'calisan') tags.push({ emoji: '💼', label: 'Çalışan' });
+                    if (u?.occupation === 'emekli') tags.push({ emoji: '🏖️', label: 'Emekli' });
+                    if (tags.length === 0) return null;
+                    return (
+                      <View className="flex-row flex-wrap mt-4" style={{ gap: 8 }}>
+                        {tags.map((tag, i) => (
+                          <View key={i} className="flex-row items-center bg-secondary-100 rounded-full px-3 py-1.5" style={{ gap: 6 }}>
+                            <Text style={{ fontSize: 14 }}>{tag.emoji}</Text>
+                            <Text className="text-xs font-semibold text-secondary-700">{tag.label}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    );
+                  })()}
                 </View>
-                <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
               </TouchableOpacity>
             </View>
           )}

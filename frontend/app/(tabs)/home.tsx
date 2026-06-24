@@ -208,59 +208,64 @@ export default function HomeScreen() {
         {/* Category Cards */}
         <View className="px-6 pt-5 pb-2" style={{ gap: 12 }}>
           <View className="flex-row" style={{ gap: 12 }}>
+
             {/* Tümü */}
             <TouchableOpacity
               onPress={() => setSelectedCategory('all')}
-              className="flex-1 rounded-xl p-4 bg-white"
+              className="flex-1 rounded-xl overflow-hidden bg-white"
               style={{ borderWidth: selectedCategory === 'all' ? 2 : 1, borderColor: selectedCategory === 'all' ? '#13ecec' : '#cfe7e7', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}
             >
-              <View className="w-9 h-9 rounded-lg items-center justify-center mb-3 bg-primary-100">
-                <Ionicons name="apps-outline" size={20} color="#0d1b1b" />
+              <View style={{ height: 90, backgroundColor: '#1a3535', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="search-outline" size={40} color="#13ecec" />
               </View>
-              <Text style={{ color: '#0d1b1b', fontWeight: '700', fontSize: 13 }}>Tümü</Text>
-              <Text style={{ color: '#4c9a9a', fontSize: 11, marginTop: 4 }}>Tüm ilanları gör</Text>
+              <View className="p-3">
+                <Text style={{ color: '#0d1b1b', fontWeight: '700', fontSize: 12 }}>Tümü</Text>
+                <Text style={{ color: '#4c9a9a', fontSize: 10, marginTop: 3 }}>Tüm ilanları gör</Text>
+              </View>
             </TouchableOpacity>
 
             {/* Evime Arkadaş */}
             <TouchableOpacity
               onPress={() => setSelectedCategory('evime_arkadas')}
-              className="flex-1 rounded-xl p-4"
+              className="flex-1 rounded-xl overflow-hidden"
               style={{ backgroundColor: '#e0f9f9', ...(selectedCategory === 'evime_arkadas' && { borderWidth: 2, borderColor: '#13ecec' }), shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}
             >
-              <View className="w-9 h-9 rounded-lg items-center justify-center mb-3" style={{ backgroundColor: 'rgba(19,236,236,0.2)' }}>
-                <Ionicons name="home-outline" size={20} color="#0d1b1b" />
+              <Image source={require('../../assets/evime-arkadas.png')} style={{ width: '100%', height: 90 }} resizeMode="cover" />
+              <View className="p-3">
+                <Text style={{ color: '#0d1b1b', fontWeight: '700', fontSize: 12 }}>Evime Arkadaş Arıyorum</Text>
+                <Text style={{ color: '#2d5c5c', fontSize: 10, marginTop: 3 }}>Evinizdeki boş odayı değerlendirin</Text>
               </View>
-              <Text style={{ color: '#0d1b1b', fontWeight: '700', fontSize: 13 }}>Evime Arkadaş</Text>
-              <Text style={{ color: '#2d5c5c', fontSize: 11, marginTop: 4 }}>Boş odanı doldur</Text>
             </TouchableOpacity>
-          </View>
 
+          </View>
           <View className="flex-row" style={{ gap: 12 }}>
+
             {/* Kalacak Ev */}
             <TouchableOpacity
               onPress={() => setSelectedCategory('kalacak_ev')}
-              className="flex-1 rounded-xl p-4"
+              className="flex-1 rounded-xl overflow-hidden"
               style={{ backgroundColor: '#102222', ...(selectedCategory === 'kalacak_ev' && { borderWidth: 2, borderColor: '#13ecec' }), shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}
             >
-              <View className="w-9 h-9 rounded-lg items-center justify-center mb-3" style={{ backgroundColor: 'rgba(19,236,236,0.15)' }}>
-                <Ionicons name="search-outline" size={20} color="#13ecec" />
+              <Image source={require('../../assets/ev-bul.png')} style={{ width: '100%', height: 90 }} resizeMode="cover" />
+              <View className="p-3">
+                <Text style={{ color: '#ffffff', fontWeight: '700', fontSize: 12 }}>Kalacak Ev Arıyorum</Text>
+                <Text style={{ color: 'rgba(19,236,236,0.7)', fontSize: 10, marginTop: 3 }}>Size en uygun evi hemen bulun</Text>
               </View>
-              <Text style={{ color: '#ffffff', fontWeight: '700', fontSize: 13 }}>Kalacak Ev</Text>
-              <Text style={{ color: 'rgba(19,236,236,0.7)', fontSize: 11, marginTop: 4 }}>Uygun evi bul</Text>
             </TouchableOpacity>
 
             {/* Beraber Ev */}
             <TouchableOpacity
               onPress={() => setSelectedCategory('beraber_ev')}
-              className="flex-1 rounded-xl p-4"
+              className="flex-1 rounded-xl overflow-hidden"
               style={{ backgroundColor: '#fff1ef', ...(selectedCategory === 'beraber_ev' && { borderWidth: 2, borderColor: '#ff6b57' }), shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}
             >
-              <View className="w-9 h-9 rounded-lg items-center justify-center mb-3" style={{ backgroundColor: 'rgba(255,107,87,0.15)' }}>
-                <Ionicons name="people-outline" size={20} color="#ff6b57" />
+              <Image source={require('../../assets/beraber-ev-arayalım.png')} style={{ width: '100%', height: 90 }} resizeMode="cover" />
+              <View className="p-3">
+                <Text style={{ color: '#3d1a16', fontWeight: '700', fontSize: 12 }}>Beraber Ev Arayalım</Text>
+                <Text style={{ color: '#7a4b45', fontSize: 10, marginTop: 3 }}>Kafa dengi bir arkadaşla eve çıkın</Text>
               </View>
-              <Text style={{ color: '#3d1a16', fontWeight: '700', fontSize: 13 }}>Beraber Ev</Text>
-              <Text style={{ color: '#7a4b45', fontSize: 11, marginTop: 4 }}>Arkadaşla eve çık</Text>
             </TouchableOpacity>
+
           </View>
         </View>
 
