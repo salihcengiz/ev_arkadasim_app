@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button, Input } from '../../src/components';
+import { AuthHero } from '../../src/components/auth';
 import { useAuthStore } from '../../src/store/authStore';
 
 const loginSchema = z.object({
@@ -26,7 +32,6 @@ export default function LoginScreen() {
   const router = useRouter();
   const { login, isLoading, error, clearError } = useAuthStore();
 
-  // Ekrana girince hata mesajını temizle
   useEffect(() => {
     clearError();
   }, []);
@@ -37,32 +42,17 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: { email: '', password: '' },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     clearError();
     const success = await login(data);
-    if (success) {
-      router.replace('/(tabs)/home');
-    }
-  };
-
-  const handleNavigateToRegister = () => {
-    clearError();
-    router.push('/(auth)/register');
-  };
-
-  const handleGoBack = () => {
-    clearError();
-    router.back();
+    if (success) router.replace('/(tabs)/home');
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-brand-surface">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
@@ -73,23 +63,18 @@ export default function LoginScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
-          <View className="px-6 pt-4">
-            <TouchableOpacity
-              onPress={handleGoBack}
-              className="w-10 h-10 rounded-full bg-secondary-100 items-center justify-center"
-            >
-              <Ionicons name="arrow-back" size={24} color="#334155" />
-            </TouchableOpacity>
-          </View>
+          <AuthHero
+            image={require('../../assets/two-friends.png')}
+            title="Ev Arkadaşım"
+            onBack={() => router.back()}
+          />
 
-          {/* Content */}
-          <View className="flex-1 px-6 pt-8">
-            <Text className="text-3xl font-bold text-secondary-900 mb-2">
-              Hoş Geldiniz
+          <View className="flex-1 px-6 pt-8 pb-10">
+            <Text className="text-brand-dark text-3xl font-bold tracking-tight">
+              Tekrar Hoş Geldin
             </Text>
-            <Text className="text-secondary-500 text-base mb-8">
-              Hesabınıza giriş yapın
+            <Text className="text-brand-muted text-base mt-2 mb-8">
+              Hayalindeki ev arkadaşını bulmak için giriş yap.
             </Text>
 
             {error && (
@@ -104,7 +89,7 @@ export default function LoginScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   label="E-posta"
-                  placeholder="ornek@email.com"
+                  placeholder="E-posta adresiniz"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoComplete="email"
@@ -136,9 +121,9 @@ export default function LoginScreen() {
 
             <TouchableOpacity
               onPress={() => router.push('/(auth)/forgot-password')}
-              className="self-end mb-6"
+              className="self-end mb-8"
             >
-              <Text className="text-primary-600 font-medium">
+              <Text className="text-primary-600 font-semibold text-sm">
                 Şifremi Unuttum
               </Text>
             </TouchableOpacity>
@@ -150,15 +135,20 @@ export default function LoginScreen() {
               fullWidth
             />
 
-            <View className="flex-row justify-center mt-6">
-              <Text className="text-secondary-500">Hesabınız yok mu? </Text>
-              <TouchableOpacity onPress={handleNavigateToRegister}>
-                <Text className="text-primary-600 font-semibold">Kayıt Ol</Text>
+            <View className="flex-row justify-center mt-8">
+              <Text className="text-secondary-500 font-medium">Hesabın yok mu? </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  clearError();
+                  router.push('/(auth)/register');
+                }}
+              >
+                <Text className="text-primary-600 font-bold">Kayıt Ol</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -201,51 +201,57 @@ export default function SearchScreen() {
     </View>
   );
 
-  const renderResultItem = ({ item }: { item: Listing }) => (
-    <Card className="mb-4" onPress={() => router.push(`/listing/${item.id}`)}>
-      {item.searchType === 'evime_arkadas' && (
-        item.images && item.images.length > 0 ? (
-          <Image source={{ uri: getImageUrl(item.images[0]) }} className="h-32 w-full rounded-xl mb-3" resizeMode="cover" />
-        ) : (
-          <View className="h-32 bg-secondary-200 rounded-xl mb-3 items-center justify-center">
-            <Ionicons name="image-outline" size={32} color="#94A3B8" />
-          </View>
-        )
-      )}
-      <View className="flex-row items-start justify-between mb-2">
-        <View className="flex-1 pr-2">
-          <Text className="text-base font-semibold text-secondary-900" numberOfLines={1}>{item.title}</Text>
-          <View className="flex-row items-center mt-1">
-            <Ionicons name="location-outline" size={14} color="#64748B" />
-            <Text className="text-secondary-500 text-sm ml-1" numberOfLines={1}>
-              {item.neighborhood ? `${item.neighborhood}, ` : ''}{item.district ? `${item.district}, ` : ''}{item.city}
-            </Text>
-          </View>
-        </View>
-        <Badge
-          label={SEARCH_TYPES[item.searchType as keyof typeof SEARCH_TYPES]?.split(' ')[0] || item.searchType}
-          variant={item.searchType === 'evime_arkadas' ? 'primary' : item.searchType === 'beraber_ev' ? 'success' : 'secondary'}
-          size="sm"
-        />
-      </View>
-      {(item.roomCount || item.squareMeters || item.furnished !== undefined) && (
-        <View className="flex-row flex-wrap mb-2">
-          {item.roomCount ? <View className="flex-row items-center mr-3"><Ionicons name="bed-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{getRoomCountLabel(item.roomCount)}</Text></View> : null}
-          {item.squareMeters ? <View className="flex-row items-center mr-3"><Ionicons name="resize-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{item.squareMeters} m²</Text></View> : null}
-          {item.furnished !== undefined && item.furnished !== null ? <View className="flex-row items-center"><Ionicons name="cube-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{item.furnished ? 'Eşyalı' : 'Eşyasız'}</Text></View> : null}
-        </View>
-      )}
-      <View className="flex-row items-center justify-between">
-        <Text className="text-lg font-bold text-primary-600">{getPriceDisplay(item)}</Text>
-        {item.user && (
-          <View className="flex-row items-center">
-            <Ionicons name="person-outline" size={14} color="#64748B" />
-            <Text className="text-secondary-500 text-sm ml-1">{item.user.fullName?.split(' ')[0]}</Text>
-          </View>
+  const renderResultItem = ({ item }: { item: Listing }) => {
+    const hasImage = item.searchType === 'evime_arkadas' && item.images && item.images.length > 0;
+    const showImageSlot = item.searchType === 'evime_arkadas';
+    return (
+      <Card className="mb-4" padding="none" onPress={() => router.push(`/listing/${item.id}`)}>
+        {showImageSlot && (
+          hasImage ? (
+            <Image source={{ uri: getImageUrl(item.images![0]) }} className="h-44 w-full" resizeMode="cover" />
+          ) : (
+            <View className="h-44 bg-secondary-200 items-center justify-center">
+              <Ionicons name="image-outline" size={32} color="#94A3B8" />
+            </View>
+          )
         )}
-      </View>
-    </Card>
-  );
+        <View className="p-4">
+          <View className="flex-row items-start justify-between mb-2">
+            <View className="flex-1 pr-2">
+              <Text className="text-base font-semibold text-secondary-900" numberOfLines={1}>{item.title}</Text>
+              <View className="flex-row items-center mt-1">
+                <Ionicons name="location-outline" size={14} color="#64748B" />
+                <Text className="text-secondary-500 text-sm ml-1" numberOfLines={1}>
+                  {item.neighborhood ? `${item.neighborhood}, ` : ''}{item.district ? `${item.district}, ` : ''}{item.city}
+                </Text>
+              </View>
+            </View>
+            <Badge
+              label={SEARCH_TYPES[item.searchType as keyof typeof SEARCH_TYPES]?.split(' ')[0] || item.searchType}
+              variant={item.searchType === 'evime_arkadas' ? 'primary' : item.searchType === 'beraber_ev' ? 'success' : 'secondary'}
+              size="sm"
+            />
+          </View>
+          {(item.roomCount || item.squareMeters || item.furnished !== undefined) && (
+            <View className="flex-row flex-wrap mb-2">
+              {item.roomCount ? <View className="flex-row items-center mr-3"><Ionicons name="bed-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{getRoomCountLabel(item.roomCount)}</Text></View> : null}
+              {item.squareMeters ? <View className="flex-row items-center mr-3"><Ionicons name="resize-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{item.squareMeters} m²</Text></View> : null}
+              {item.furnished !== undefined && item.furnished !== null ? <View className="flex-row items-center"><Ionicons name="cube-outline" size={14} color="#64748B" /><Text className="text-secondary-500 text-sm ml-1">{item.furnished ? 'Eşyalı' : 'Eşyasız'}</Text></View> : null}
+            </View>
+          )}
+          <View className="flex-row items-center justify-between">
+            <Text className="text-lg font-bold text-primary-600">{getPriceDisplay(item)}</Text>
+            {item.user && (
+              <View className="flex-row items-center">
+                <Ionicons name="person-outline" size={14} color="#64748B" />
+                <Text className="text-secondary-500 text-sm ml-1">{item.user.fullName?.split(' ')[0]}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </Card>
+    );
+  };
 
   const renderGroupedView = () => {
     const types = [
@@ -259,7 +265,7 @@ export default function SearchScreen() {
       if (items.length === 0) return null;
       return (
         <View key={type.key} className="mb-6">
-          <View className={`flex-row items-center mb-3 ${type.bgColor} p-3 rounded-xl`}>
+          <View className={`flex-row items-center mb-3 ${type.bgColor} p-3 rounded-xl`} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }}>
             <View className={`w-8 h-8 ${type.iconBg} rounded-full items-center justify-center mr-3`}>
               <Ionicons name={type.icon as any} size={18} color={type.iconColor} />
             </View>

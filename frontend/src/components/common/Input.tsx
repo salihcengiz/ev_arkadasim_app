@@ -53,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
           <Ionicons
             name={leftIcon}
             size={20}
-            color={error ? '#EF4444' : isFocused ? '#4F46E5' : '#94A3B8'}
+            color={error ? '#EF4444' : isFocused ? '#13ecec' : '#94A3B8'}
             style={{ marginRight: 12 }}
           />
         )}

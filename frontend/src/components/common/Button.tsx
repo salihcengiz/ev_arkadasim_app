@@ -32,14 +32,14 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = 'flex-row items-center justify-center rounded-xl';
   
   const variantStyles = {
-    primary: 'bg-primary-600 active:bg-primary-700',
+    primary: 'bg-primary-500 active:bg-primary-600',
     secondary: 'bg-secondary-600 active:bg-secondary-700',
-    outline: 'bg-transparent border-2 border-primary-600 active:bg-primary-50',
+    outline: 'bg-transparent border-2 border-primary-500 active:bg-primary-50',
     ghost: 'bg-transparent active:bg-secondary-100',
   };
 
   const textVariantStyles = {
-    primary: 'text-white',
+    primary: 'text-brand-dark',
     secondary: 'text-white',
     outline: 'text-primary-600',
     ghost: 'text-primary-600',

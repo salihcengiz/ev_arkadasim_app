@@ -10,16 +10,16 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#EEF2FF',
-          100: '#E0E7FF',
-          200: '#C7D2FE',
-          300: '#A5B4FC',
-          400: '#818CF8',
-          500: '#6366F1',
-          600: '#4F46E5',
-          700: '#4338CA',
-          800: '#3730A3',
-          900: '#312E81',
+          50: '#f0fefe',
+          100: '#ccfbfb',
+          200: '#99f5f5',
+          300: '#5eeaea',
+          400: '#2de0e0',
+          500: '#13ecec',
+          600: '#0ecece',
+          700: '#09a8a8',
+          800: '#077a7a',
+          900: '#055959',
         },
         secondary: {
           50: '#F8FAFC',
@@ -32,6 +32,12 @@ module.exports = {
           700: '#334155',
           800: '#1E293B',
           900: '#0F172A',
+        },
+        brand: {
+          dark: '#0d1b1b',
+          muted: '#4c9a9a',
+          border: '#cfe7e7',
+          surface: '#f6f8f8',
         },
         success: {
           500: '#22C55E',
